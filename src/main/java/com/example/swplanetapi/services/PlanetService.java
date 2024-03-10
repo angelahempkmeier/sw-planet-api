@@ -2,6 +2,7 @@ package com.example.swplanetapi.services;
 
 import com.example.swplanetapi.entities.Planet;
 import com.example.swplanetapi.repositories.PlanetRepository;
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,5 +21,9 @@ public class PlanetService {
 
     public Optional<Planet> get(Long id){
         return repository.findById(id);
+    }
+
+    public Optional<Planet> getByName(String name) {
+        return repository.findByName(name);
     }
 }
