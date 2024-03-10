@@ -4,7 +4,6 @@ import com.example.swplanetapi.entities.Planet;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.h2.table.Plan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -48,8 +47,6 @@ public class PlanetRepositoryTest {
         planet.setId(null);
 
         assertThatThrownBy(() -> planetRepository.save(planet)).isInstanceOf(RuntimeException.class);
-
-
     }
 
 
