@@ -2,9 +2,11 @@ package com.example.swplanetapi.services;
 
 import com.example.swplanetapi.entities.Planet;
 import com.example.swplanetapi.repositories.PlanetRepository;
-import io.micrometer.observation.ObservationFilter;
+import com.example.swplanetapi.utils.QueryBuilder;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +27,10 @@ public class PlanetService {
 
     public Optional<Planet> getByName(String name) {
         return repository.findByName(name);
+    }
+
+    public List<Planet> list(String terrain, String climate) {
+        Example<Planet> query = QueryBuilder.makeQuery(new Planet(climate, terrain));
+        return repository.findAll(query);
     }
 }
