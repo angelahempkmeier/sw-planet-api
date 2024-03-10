@@ -3,6 +3,7 @@ package com.example.swplanetapi.services;
 import static com.example.swplanetapi.common.PlanetConstants.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import com.example.swplanetapi.entities.Planet;
@@ -13,9 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Example;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,6 +114,16 @@ public class PlanetServiceTest {
         assertThat(sut).isEmpty();
     }
 
+    @Test
+    public void removePlanet_WithExistingId_doesNotThrowAnyException(){
+        assertThatCode(() -> planetService.remove(1L)).doesNotThrowAnyException();
+    }
 
+    @Test
+    public void removePlanet_WithUnexistingId_ThrowsException() {
+        doThrow(new RuntimeException()).when(planetRepository).deleteById(99L);
+
+        assertThatThrownBy(() -> planetService.remove(99L)).isInstanceOf(RuntimeException.class);
+    }
 
 }
