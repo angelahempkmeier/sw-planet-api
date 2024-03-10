@@ -1,6 +1,7 @@
 package com.example.swplanetapi.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
@@ -9,8 +10,14 @@ public class Planet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty
+    @Column(nullable = false)
     private String name;
+    @NotEmpty
+    @Column(nullable = false)
     private String climate;
+    @NotEmpty
+    @Column(nullable = false)
     private String terrain;
 
     public Planet() {
