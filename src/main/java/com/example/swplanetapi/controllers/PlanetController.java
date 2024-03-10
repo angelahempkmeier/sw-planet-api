@@ -38,4 +38,10 @@ public class PlanetController {
         List<Planet> planets = service.list(terrain, climate);
         return ResponseEntity.ok(planets);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remove(@PathVariable("id") Long id){
+        service.remove(id);
+        return ResponseEntity.noContent().build();
+    }
 }
