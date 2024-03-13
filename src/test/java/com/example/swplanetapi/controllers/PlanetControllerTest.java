@@ -1,10 +1,12 @@
 package com.example.swplanetapi.controllers;
 
 import static com.example.swplanetapi.common.PlanetConstants.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.hasSize;
@@ -17,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -116,5 +120,21 @@ public class PlanetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
+
+    @Test
+    public void removePlanet_WithExistingId_ReturnsNoContent() throws Exception {
+        mockMvc.perform(delete("/planets/1"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void removePlanet_WithUnexistingId_ReturnsNotFound() throws Exception {
+        doThrow(new EmptyResultDataAccessException(1)).when(planetService).remove(1L);
+
+        mockMvc.perform(delete("/planets/1"))
+                .andExpect(status().isNotFound());
+    }
+
+
 
 }
