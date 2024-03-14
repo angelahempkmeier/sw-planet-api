@@ -96,7 +96,7 @@ public class PlanetRepositoryTest {
         assertThat(planetOptional).isEmpty();
     }
 
-    @Sql(scripts = "/import_planets.sql")
+    @Sql(scripts = {"/import_planets.sql"})
     @Test
     public void listPlanets_ReturnsFilteredPlanets(){
         Example<Planet> queryWithoutFilters = QueryBuilder.makeQuery(new Planet());
